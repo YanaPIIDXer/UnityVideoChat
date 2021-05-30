@@ -7,6 +7,8 @@ using UniRx.Triggers;
 using System;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 
 namespace VideoChat.UI
 {
@@ -26,6 +28,11 @@ namespace VideoChat.UI
         private CameraImage CamImage = null;
 
         /// <summary>
+        /// ストリーム送信中か？
+        /// </summary>
+        private bool bIsStreaming = false;
+
+        /// <summary>
         /// ハンドシェイクのイベントコード
         /// </summary>
         public const byte HandshakeEventCode = 10;
@@ -42,6 +49,7 @@ namespace VideoChat.UI
 
             this.UpdateAsObservable()
                 .ThrottleFirstFrame(60)
+                .Where(_ => !bIsStreaming)
                 .Subscribe(_ => Send())
                 .AddTo(gameObject);
 
@@ -51,9 +59,10 @@ namespace VideoChat.UI
         /// <summary>
         /// 送信
         /// </summary>
-        private void Send()
+        private async void Send()
         {
             if (!CamImage.IsPlaying) { return; }
+
             var Pixels = CamImage.CameraTexture.GetPixels();
             byte[] Data = new byte[Pixels.Length * 3];
             for (var i = 0; i < Pixels.Length; i++)
@@ -65,14 +74,32 @@ namespace VideoChat.UI
 
             // ハンドシェイク
             int[] HandshakeData = new int[] { View.ViewID, CameraImage.TextureWidth, CameraImage.TextureHeight, Data.Length };
-            PhotonNetwork.RaiseEvent(HandshakeEventCode, HandshakeData, new RaiseEventOptions()
+            var EventOpt = new RaiseEventOptions()
             {
                 CachingOption = EventCaching.DoNotCache,
                 Receivers = ReceiverGroup.All
-            }, new SendOptions()
+            };
+            var SendOpt = new SendOptions()
             {
                 Reliability = true
+            };
+            PhotonNetwork.RaiseEvent(HandshakeEventCode, HandshakeData, EventOpt, SendOpt);
+
+            // ストリーム
+            bIsStreaming = true;
+            await UniTask.Run(() =>
+            {
+                Data.ToObservable()
+                    .Buffer(Data.Length / 6)
+                    .Subscribe(async BufferData =>
+                    {
+                        byte[] SendData = new byte[BufferData.Count];
+                        BufferData.CopyTo(SendData, 0);
+                        PhotonNetwork.RaiseEvent(StreamEventCode, SendData, EventOpt, SendOpt);
+                        await UniTask.Delay(1);
+                    });
             });
+            bIsStreaming = false;
         }
     }
 }
