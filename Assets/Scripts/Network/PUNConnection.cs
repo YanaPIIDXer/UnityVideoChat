@@ -38,6 +38,8 @@ namespace VideoChat.Network
             {
                 var Token = this.GetCancellationTokenOnDestroy();
                 await Pun2TaskNetwork.ConnectUsingSettingsAsync(Token);
+
+                await Pun2TaskNetwork.JoinLobbyAsync(token: Token);
             }
             catch (Exception e)
             {
