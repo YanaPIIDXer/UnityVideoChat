@@ -45,7 +45,6 @@ namespace VideoChat.Network
             }
 
             OnConnectedServerSubject.OnNext(Unit.Default);
-            OnConnectedServerSubject.OnCompleted();
         }
     }
 }
