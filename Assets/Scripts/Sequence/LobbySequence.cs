@@ -4,7 +4,6 @@ using UnityEngine;
 using VideoChat.Network;
 using UniRx;
 using System;
-using UnityEngine.SceneManagement;
 
 namespace VideoChat.Sequence
 {
@@ -19,13 +18,6 @@ namespace VideoChat.Sequence
                          .Subscribe(_ =>
                          {
                              PUNConnection.Instance.DebugJoinRoom();
-                         }).AddTo(gameObject);
-
-            PUNConnection.Instance.OnJoinRoom
-                         .Subscribe(_ =>
-                         {
-                             // FIXME:OnJoinedRoomコールバックを抜けた後にPrefabをInstantiateしたら死んでしまう
-                             SceneManager.LoadScene("Chat");
                          }).AddTo(gameObject);
         }
     }

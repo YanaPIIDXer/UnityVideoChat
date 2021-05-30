@@ -8,6 +8,7 @@ using UniRx;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 namespace VideoChat.Network
 {
@@ -87,6 +88,7 @@ namespace VideoChat.Network
         /// </summary>
         public async void DebugJoinRoom()
         {
+            SceneManager.LoadScene("Chat");
             var Token = this.GetCancellationTokenOnDestroy();
             try
             {
@@ -95,6 +97,7 @@ namespace VideoChat.Network
             catch (Exception e)
             {
                 Debug.LogError("Create or Join Room Failed. Reason:" + e.Message);
+                SceneManager.LoadScene("Lobby");
             }
 
             OnJoinRoomSubject.OnNext(Unit.Default);
