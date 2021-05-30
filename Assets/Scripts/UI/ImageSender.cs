@@ -15,9 +15,19 @@ namespace VideoChat.UI
         /// </summary>
         private PhotonView View = null;
 
+        /// <summary>
+        /// カメラの映像
+        /// </summary>
+        private CameraImage CamImage = null;
+
         void Awake()
         {
             View = GetComponent<PhotonView>();
+            CamImage = new CameraImage();
+
+            // テスト
+            GetComponent<UnityEngine.UI.Image>().material.mainTexture = CamImage.CameraTexture;
+            CamImage.Play();
         }
     }
 }
