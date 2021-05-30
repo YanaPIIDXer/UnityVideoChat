@@ -51,6 +51,16 @@ namespace VideoChat.Network
         /// </summary>
         public IObservable<List<RoomInfo>> OnRoomListUpdated { get { return OnRoomListUpdatedSubject; } }
 
+        /// <summary>
+        /// ルーム入室Subject
+        /// </summary>
+        private Subject<Unit> OnJoinRoomSubject = new Subject<Unit>();
+
+        /// <summary>
+        /// ルームに入室した
+        /// </summary>
+        public IObservable<Unit> OnJoinRoom { get { return OnJoinRoomSubject; } }
+
         async void Awake()
         {
             Instance = this;
@@ -69,6 +79,25 @@ namespace VideoChat.Network
             }
 
             OnConnectServerSubject.OnNext(Unit.Default);
+        }
+
+        /// <summary>
+        /// デバッグ用。
+        /// ルームを新規作成するか既存のルームに入る
+        /// </summary>
+        public async void DebugJoinRoom()
+        {
+            var Token = this.GetCancellationTokenOnDestroy();
+            try
+            {
+                await Pun2TaskNetwork.JoinOrCreateRoomAsync("TestRoom", new RoomOptions(), TypedLobby.Default, token: Token);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Create or Join Room Failed. Reason:" + e.Message);
+            }
+
+            OnJoinRoomSubject.OnNext(Unit.Default);
         }
 
         /// <summary>
