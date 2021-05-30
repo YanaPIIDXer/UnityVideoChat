@@ -8,7 +8,6 @@ using UniRx;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.SceneManagement;
 
 namespace VideoChat.Network
 {
@@ -62,6 +61,16 @@ namespace VideoChat.Network
         /// </summary>
         public IObservable<Unit> OnJoinRoom { get { return OnJoinRoomSubject; } }
 
+        /// <summary>
+        /// ルーム入室失敗時Subject
+        /// </summary>
+        private Subject<Unit> OnFailedToJoinRoomSubject = new Subject<Unit>();
+
+        /// <summary>
+        /// ルーム入室に失敗した
+        /// </summary>
+        public IObservable<Unit> OnFailedToJoinRoom { get { return OnFailedToJoinRoomSubject; } }
+
         async void Awake()
         {
             Instance = this;
@@ -88,7 +97,6 @@ namespace VideoChat.Network
         /// </summary>
         public async void DebugJoinRoom()
         {
-            SceneManager.LoadScene("Chat");
             var Token = this.GetCancellationTokenOnDestroy();
             try
             {
@@ -97,7 +105,8 @@ namespace VideoChat.Network
             catch (Exception e)
             {
                 Debug.LogError("Create or Join Room Failed. Reason:" + e.Message);
-                SceneManager.LoadScene("Lobby");
+                OnFailedToJoinRoomSubject.OnNext(Unit.Default);
+                return;
             }
 
             OnJoinRoomSubject.OnNext(Unit.Default);
