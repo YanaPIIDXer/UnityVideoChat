@@ -10,6 +10,11 @@ namespace VideoChat.UI
     public class MemberPanels : MonoBehaviour
     {
         /// <summary>
+        /// インスタンス
+        /// </summary>
+        public static MemberPanels Instance { get; private set; } = null;
+
+        /// <summary>
         /// 自分自身のパネル
         /// </summary>
         [SerializeField]
@@ -25,6 +30,16 @@ namespace VideoChat.UI
         /// 現在の他人の数
         /// </summary>
         private int CurrentOtherCount = 0;
+
+        void Awake()
+        {
+            Instance = this;
+        }
+
+        void OnDestroy()
+        {
+            Instance = null;
+        }
 
         /// <summary>
         /// 自分自身のパネルにセット

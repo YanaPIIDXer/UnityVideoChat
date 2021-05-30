@@ -7,7 +7,7 @@ namespace VideoChat.UI
     /// <summary>
     /// カメライメージ
     /// </summary>
-    public class CameraImage : MonoBehaviour
+    public class CameraImage
     {
     }
 }
