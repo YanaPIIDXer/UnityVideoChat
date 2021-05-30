@@ -41,6 +41,16 @@ namespace VideoChat.Network
         /// </summary>
         public IObservable<DisconnectCause> OnDisconnect { get { return OnDisconnectSubject; } }
 
+        /// <summary>
+        /// ルームリスト更新時Subject
+        /// </summary>
+        private Subject<List<RoomInfo>> OnRoomListUpdatedSubject = new Subject<List<RoomInfo>>();
+
+        /// <summary>
+        /// ルームリストが更新された
+        /// </summary>
+        public IObservable<List<RoomInfo>> OnRoomListUpdated { get { return OnRoomListUpdatedSubject; } }
+
         async void Awake()
         {
             Instance = this;
@@ -68,6 +78,15 @@ namespace VideoChat.Network
         public override void OnDisconnected(DisconnectCause cause)
         {
             OnDisconnectSubject.OnNext(cause);
+        }
+
+        /// <summary>
+        /// ルームリスト更新
+        /// </summary>
+        /// <param name="roomList">ルームリスト</param>
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        {
+            OnRoomListUpdatedSubject.OnNext(roomList);
         }
     }
 }
