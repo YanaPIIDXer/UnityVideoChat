@@ -1,5 +1,28 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": {
+      "version": "2.2.5",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
+    "com.neuecc.unirx": {
+      "version": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "284d5c50d3f1ddd9fa7df3d382ea904732a9c2ff"
+    },
+    "com.torisoup.pun2task": {
+      "version": "https://github.com/TORISOUP/Pun2Task.git?path=Assets/Plugins/Pun2Task",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.2.5"
+      },
+      "hash": "f47257776a423babb8972522290faa3cfe16f6ad"
+    },
     "com.unity.2d.animation": {
       "version": "3.2.6",
       "depth": 0,
