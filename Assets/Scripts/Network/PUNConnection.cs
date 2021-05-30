@@ -6,13 +6,15 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using System;
+using Photon.Pun;
+using Photon.Realtime;
 
 namespace VideoChat.Network
 {
     /// <summary>
     /// PUNとの接続
     /// </summary>
-    public class PUNConnection : MonoBehaviour
+    public class PUNConnection : MonoBehaviourPunCallbacks
     {
         /// <summary>
         /// インスタンス
@@ -22,12 +24,22 @@ namespace VideoChat.Network
         /// <summary>
         /// サーバ接続時Subject
         /// </summary>
-        private Subject<Unit> OnConnectedServerSubject = new Subject<Unit>();
+        private Subject<Unit> OnConnectServerSubject = new Subject<Unit>();
 
         /// <summary>
         /// サーバに接続した
         /// </summary>
-        public Subject<Unit> OnConnectedServer { get { return OnConnectedServerSubject; } }
+        public Subject<Unit> OnConnectServer { get { return OnConnectServerSubject; } }
+
+        /// <summary>
+        /// 切断時Subject
+        /// </summary>
+        private Subject<DisconnectCause> OnDisconnectSubject = new Subject<DisconnectCause>();
+
+        /// <summary>
+        /// 切断された
+        /// </summary>
+        public IObservable<DisconnectCause> OnDisconnect { get { return OnDisconnectSubject; } }
 
         async void Awake()
         {
@@ -46,7 +58,16 @@ namespace VideoChat.Network
                 Debug.LogError("Connect to PUN Failed. Reason:" + e.Message);
             }
 
-            OnConnectedServerSubject.OnNext(Unit.Default);
+            OnConnectServerSubject.OnNext(Unit.Default);
+        }
+
+        /// <summary>
+        /// 切断された
+        /// </summary>
+        /// <param name="cause">切断理由</param>
+        public override void OnDisconnected(DisconnectCause cause)
+        {
+            OnDisconnectSubject.OnNext(cause);
         }
     }
 }
