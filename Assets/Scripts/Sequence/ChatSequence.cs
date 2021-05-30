@@ -33,6 +33,7 @@ namespace VideoChat.Sequence
         private void OnJoinRoom()
         {
             var Img = PhotonNetwork.Instantiate("Prefabs/CameraImage", Vector3.zero, Quaternion.identity);
+            Img.AddComponent<ImageSender>();
         }
     }
 }
