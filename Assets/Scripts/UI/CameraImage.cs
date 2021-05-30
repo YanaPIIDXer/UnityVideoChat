@@ -20,12 +20,22 @@ namespace VideoChat.UI
         public bool IsPlaying { get { return CameraTexture.isPlaying; } }
 
         /// <summary>
+        /// テクスチャの幅
+        /// </summary>
+        public const int TextureWidth = 640;
+
+        /// <summary>
+        /// テクスチャの高さ
+        /// </summary>
+        public const int TextureHeight = 480;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public CameraImage()
         {
             WebCamDevice Device = WebCamTexture.devices[0];
-            CameraTexture = new WebCamTexture(Device.name, 640, 480, 30);
+            CameraTexture = new WebCamTexture(Device.name, TextureWidth, TextureHeight, 30);
         }
 
         /// <summary>
