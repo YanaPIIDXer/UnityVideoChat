@@ -26,7 +26,7 @@ namespace VideoChat.UI
             CamImage = new CameraImage();
 
             // テスト
-            GetComponent<UnityEngine.UI.Image>().material.mainTexture = CamImage.CameraTexture;
+            GetComponent<UnityEngine.UI.RawImage>().texture = CamImage.CameraTexture;
             CamImage.Play();
         }
     }
