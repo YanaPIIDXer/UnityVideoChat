@@ -24,7 +24,7 @@ namespace VideoChat.Sequence
             PUNConnection.Instance.OnJoinRoom
                          .Subscribe(_ =>
                          {
-                             // FIXME:OnJoinedRoomコールバックを抜けた後にInstantiateしたら死んでしまう
+                             // FIXME:OnJoinedRoomコールバックを抜けた後にPrefabをInstantiateしたら死んでしまう
                              SceneManager.LoadScene("Chat");
                          }).AddTo(gameObject);
         }
