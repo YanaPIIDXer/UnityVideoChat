@@ -13,12 +13,21 @@ namespace VideoChat.UI
         /// 自分自身のパネル
         /// </summary>
         [SerializeField]
-        private GameObject OwnPanel = null;
+        private RectTransform OwnPanel = null;
 
         /// <summary>
         /// 他人のパネル
         /// </summary>
         [SerializeField]
-        private GameObject[] OtherPanel = new GameObject[4] { null, null, null, null };
+        private RectTransform[] OtherPanel = new RectTransform[4] { null, null, null, null };
+
+        /// <summary>
+        /// 自分自身のパネルにセット
+        /// </summary>
+        /// <param name="OwnTransform">Transform</param>
+        public void SetOwn(RectTransform OwnTransform)
+        {
+            OwnTransform.SetParent(OwnPanel, false);
+        }
     }
 }

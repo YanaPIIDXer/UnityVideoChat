@@ -394,12 +394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a6d785f4303154386868a228cb303a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OwnPanel: {fileID: 316049342}
+  OwnPanel: {fileID: 316049343}
   OtherPanel:
-  - {fileID: 706315810}
-  - {fileID: 989858730}
-  - {fileID: 1241398874}
-  - {fileID: 1903426508}
+  - {fileID: 706315811}
+  - {fileID: 989858731}
+  - {fileID: 1241398875}
+  - {fileID: 1903426509}
 --- !u!1 &706315810
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,6 +764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e664e157ed99ce048bd0e2dc4d24582d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Panels: {fileID: 434682554}
 --- !u!1 &1903426508
 GameObject:
   m_ObjectHideFlags: 0

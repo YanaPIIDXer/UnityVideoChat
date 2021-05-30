@@ -4,6 +4,8 @@ using UnityEngine;
 using VideoChat.Network;
 using UniRx;
 using System;
+using Photon.Pun;
+using VideoChat.UI;
 
 namespace VideoChat.Sequence
 {
@@ -12,11 +14,26 @@ namespace VideoChat.Sequence
     /// </summary>
     public class ChatSequence : MonoBehaviour
     {
+        /// <summary>
+        /// パネル
+        /// </summary>
+        [SerializeField]
+        private MemberPanels Panels = null;
+
         void Awake()
         {
             PUNConnection.Instance.OnJoinRoom
-                         .Subscribe(_ => Debug.Log("Join Room"))
+                         .Subscribe(_ => OnJoinRoom())
                          .AddTo(gameObject);
+        }
+
+        /// <summary>
+        /// 入室した
+        /// </summary>
+        private void OnJoinRoom()
+        {
+            var Img = PhotonNetwork.Instantiate("Prefabs/CameraImage", Vector3.zero, Quaternion.identity);
+            Panels.SetOwn(Img.GetComponent<RectTransform>());
         }
     }
 }
